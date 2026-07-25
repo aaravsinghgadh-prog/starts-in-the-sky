@@ -345,6 +345,39 @@ h1 {
   line-height: 1.6;
 }
 
+.shapes-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+
+.shape {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.shape-watch::before {
+  content: "⌚";
+}
+
+.shape-spaceship::before {
+  content: "🛸";
+}
+
+.shape-witch::before {
+  content: "🧙‍♀️";
+}
+
+.shape-water::before {
+  content: "💧";
+}
+
 @keyframes twinkle {
   0%, 100% { opacity: 0.4; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1.2); }
