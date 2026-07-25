@@ -27,15 +27,22 @@
       </div>
     </div>
 
+    <!-- World Journey Animation Modal -->
+    <div id="journeyModal" class="journey-modal">
+      <canvas id="journeyCanvas"></canvas>
+      <button id="exitJourneyBtn" class="exit-journey-btn">EXIT</button>
+      <div id="journeyText" class="journey-text"></div>
+    </div>
+
     <div class="music-player">
       <button class="play-btn" id="playBtn" aria-label="Play music">
         <span class="play-icon">♪</span>
       </button>
       <div class="music-info">
-        <p class="track-name">Your Track</p>
+        <p class="track-name">Jet to the West - Lil Mosey</p>
       </div>
       <audio id="audioPlayer" loop>
-        <source src="your-music.mp3" type="audio/mpeg">
+        <source src="jet-to-the-west.mp3" type="audio/mpeg">
       </audio>
     </div>
 
@@ -49,7 +56,7 @@
         </p>
         <div class="actions">
           <a class="button primary" href="#about">Learn more</a>
-          <a class="button secondary" href="mailto:you@example.com">Welcome to world</a>
+          <button class="button secondary" id="worldJourneyBtn">Welcome to world</button>
         </div>
       </section>
     </main>
@@ -149,6 +156,287 @@
         playBtn.classList.remove('playing');
       });
 
+      // ========== WORLD JOURNEY ANIMATION ==========
+      const worldJourneyBtn = document.getElementById('worldJourneyBtn');
+      const journeyModal = document.getElementById('journeyModal');
+      const journeyCanvas = document.getElementById('journeyCanvas');
+      const journeyCtx = journeyCanvas.getContext('2d');
+      const exitJourneyBtn = document.getElementById('exitJourneyBtn');
+      const journeyText = document.getElementById('journeyText');
+
+      function resizeCanvas() {
+        journeyCanvas.width = window.innerWidth;
+        journeyCanvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      let journeyActive = false;
+      let journeyProgress = 0;
+      let jetX = journeyCanvas.width * 0.1;
+      let jetY = journeyCanvas.height * 0.5;
+
+      worldJourneyBtn.addEventListener('click', () => {
+        journeyModal.classList.add('active');
+        journeyActive = true;
+        journeyProgress = 0;
+        journeyLoop();
+      });
+
+      exitJourneyBtn.addEventListener('click', () => {
+        journeyModal.classList.remove('active');
+        journeyActive = false;
+      });
+
+      function drawJet(x, y, angle) {
+        journeyCtx.save();
+        journeyCtx.translate(x, y);
+        journeyCtx.rotate(angle);
+        
+        journeyCtx.fillStyle = '#333';
+        journeyCtx.beginPath();
+        journeyCtx.moveTo(0, 0);
+        journeyCtx.lineTo(-30, -15);
+        journeyCtx.lineTo(-25, 0);
+        journeyCtx.lineTo(-30, 15);
+        journeyCtx.closePath();
+        journeyCtx.fill();
+        
+        journeyCtx.fillStyle = '#5dd4ff';
+        journeyCtx.beginPath();
+        journeyCtx.arc(-10, 0, 5, 0, Math.PI * 2);
+        journeyCtx.fill();
+        
+        journeyCtx.fillStyle = '#ff6b35';
+        journeyCtx.beginPath();
+        journeyCtx.moveTo(-30, -5);
+        journeyCtx.lineTo(-50 - Math.random() * 10, 0);
+        journeyCtx.lineTo(-30, 5);
+        journeyCtx.closePath();
+        journeyCtx.fill();
+        
+        journeyCtx.restore();
+      }
+
+      function journeyLoop() {
+        journeyProgress += 0.3;
+        
+        if (journeyProgress <= 25) {
+          journeyCtx.fillStyle = 'rgba(10, 50, 150, 0.9)';
+          journeyCtx.fillRect(0, 0, journeyCanvas.width, journeyCanvas.height);
+          
+          journeyCtx.strokeStyle = 'rgba(100, 200, 255, 0.3)';
+          journeyCtx.lineWidth = 2;
+          for (let i = 0; i < 5; i++) {
+            journeyCtx.beginPath();
+            journeyCtx.moveTo(0, journeyCanvas.height * 0.6 + i * 20 + Math.sin(journeyProgress / 5 + i) * 5);
+            for (let x = 0; x < journeyCanvas.width; x += 20) {
+              journeyCtx.lineTo(x, journeyCanvas.height * 0.6 + i * 20 + Math.sin(journeyProgress / 5 + i + x / 50) * 8);
+            }
+            journeyCtx.stroke();
+          }
+          
+          journeyText.textContent = '🌊 OCEAN';
+          jetX = journeyCanvas.width * 0.1 + journeyProgress * 10;
+          jetY = journeyCanvas.height * 0.4;
+        }
+        
+        else if (journeyProgress <= 50) {
+          const rainforestProgress = (journeyProgress - 25) / 25;
+          
+          const skyGradient = journeyCtx.createLinearGradient(0, 0, 0, journeyCanvas.height);
+          skyGradient.addColorStop(0, `rgba(50, 30, 80, ${0.3 + rainforestProgress * 0.5})`);
+          skyGradient.addColorStop(1, `rgba(20, 80, 30, ${0.5 + rainforestProgress * 0.4})`);
+          journeyCtx.fillStyle = skyGradient;
+          journeyCtx.fillRect(0, 0, journeyCanvas.width, journeyCanvas.height);
+          
+          journeyCtx.fillStyle = 'rgba(10, 40, 15, 0.8)';
+          for (let i = 0; i < 20; i++) {
+            const treeX = (i * journeyCanvas.width / 20 - journeyProgress * 5) % journeyCanvas.width;
+            const treeHeight = 100 + Math.sin(i) * 50;
+            journeyCtx.beginPath();
+            journeyCtx.moveTo(treeX, journeyCanvas.height * 0.6);
+            journeyCtx.lineTo(treeX - 30, journeyCanvas.height * 0.6 - treeHeight);
+            journeyCtx.lineTo(treeX + 30, journeyCanvas.height * 0.6 - treeHeight);
+            journeyCtx.closePath();
+            journeyCtx.fill();
+          }
+          
+          journeyText.textContent = '🌳 RAINFOREST';
+          jetX = journeyCanvas.width * 0.1 + journeyProgress * 10;
+          jetY = journeyCanvas.height * 0.3;
+        }
+        
+        else if (journeyProgress <= 75) {
+          const skyProgress = (journeyProgress - 50) / 25;
+          
+          const skyGradient = journeyCtx.createLinearGradient(0, 0, 0, journeyCanvas.height);
+          skyGradient.addColorStop(0, `rgba(20, 40, 100, ${1 - skyProgress * 0.5})`);
+          skyGradient.addColorStop(1, `rgba(10, 5, 30, ${0.5 + skyProgress * 0.5})`);
+          journeyCtx.fillStyle = skyGradient;
+          journeyCtx.fillRect(0, 0, journeyCanvas.width, journeyCanvas.height);
+          
+          journeyCtx.fillStyle = `rgba(200, 200, 200, ${0.3 - skyProgress * 0.3})`;
+          for (let i = 0; i < 5; i++) {
+            const cloudX = (i * journeyCanvas.width / 5 - journeyProgress * 8) % journeyCanvas.width;
+            journeyCtx.beginPath();
+            journeyCtx.arc(cloudX, journeyCanvas.height * 0.3 + i * 30, 40, 0, Math.PI * 2);
+            journeyCtx.fill();
+          }
+          
+          journeyText.textContent = '☁️ SKY';
+          jetX = journeyCanvas.width * 0.1 + journeyProgress * 10;
+          jetY = journeyCanvas.height * 0.2;
+        }
+        
+        else {
+          journeyCtx.fillStyle = '#000';
+          journeyCtx.fillRect(0, 0, journeyCanvas.width, journeyCanvas.height);
+          
+          // Glowing stars with twinkling effect
+          for (let i = 0; i < 300; i++) {
+            const starX = (Math.sin(i * 0.7) * journeyCanvas.width * 1.2) % journeyCanvas.width;
+            const starY = (Math.cos(i * 1.3) * journeyCanvas.height * 1.2) % journeyCanvas.height;
+            const starSize = Math.sin(i * 0.5 + journeyProgress * 0.05) * 1 + 1.5;
+            const glow = Math.sin(journeyProgress * 0.1 + i) * 0.5 + 0.5;
+            
+            // Star glow
+            journeyCtx.fillStyle = `rgba(255, 255, 150, ${glow * 0.4})`;
+            journeyCtx.beginPath();
+            journeyCtx.arc(starX, starY, starSize * 3, 0, Math.PI * 2);
+            journeyCtx.fill();
+            
+            // Star core
+            journeyCtx.fillStyle = `rgba(255, 255, 200, ${0.8 + glow * 0.2})`;
+            journeyCtx.beginPath();
+            journeyCtx.arc(starX, starY, starSize, 0, Math.PI * 2);
+            journeyCtx.fill();
+          }
+          
+          // Mars planet
+          const marsX = journeyCanvas.width * 0.25;
+          const marsY = journeyCanvas.height * 0.35;
+          const marsSize = 50;
+          
+          // Mars glow
+          journeyCtx.fillStyle = 'rgba(200, 100, 50, 0.3)';
+          journeyCtx.beginPath();
+          journeyCtx.arc(marsX, marsY, marsSize * 1.8, 0, Math.PI * 2);
+          journeyCtx.fill();
+          
+          // Mars body
+          const marsGradient = journeyCtx.createRadialGradient(marsX - 10, marsY - 10, 0, marsX, marsY, marsSize);
+          marsGradient.addColorStop(0, '#ff6b35');
+          marsGradient.addColorStop(1, '#cc4422');
+          journeyCtx.fillStyle = marsGradient;
+          journeyCtx.beginPath();
+          journeyCtx.arc(marsX, marsY, marsSize, 0, Math.PI * 2);
+          journeyCtx.fill();
+          
+          // Mars details
+          journeyCtx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+          journeyCtx.beginPath();
+          journeyCtx.arc(marsX - 15, marsY - 5, 8, 0, Math.PI * 2);
+          journeyCtx.fill();
+          journeyCtx.beginPath();
+          journeyCtx.arc(marsX + 10, marsY + 15, 12, 0, Math.PI * 2);
+          journeyCtx.fill();
+          
+          // Purple giant planets with glow
+          const giants = [
+            { x: journeyCanvas.width * 0.75, y: journeyCanvas.height * 0.25, size: 70, glow: 'rgba(200, 100, 255, 0.6)' },
+            { x: journeyCanvas.width * 0.85, y: journeyCanvas.height * 0.65, size: 90, glow: 'rgba(150, 80, 255, 0.5)' },
+            { x: journeyCanvas.width * 0.15, y: journeyCanvas.height * 0.75, size: 60, glow: 'rgba(180, 120, 255, 0.6)' }
+          ];
+          
+          giants.forEach((giant, idx) => {
+            const glowPulse = Math.sin(journeyProgress * 0.08 + idx) * 0.3 + 0.7;
+            
+            // Outer glow
+            journeyCtx.fillStyle = `rgba(180, 100, 255, ${0.2 * glowPulse})`;
+            journeyCtx.beginPath();
+            journeyCtx.arc(giant.x, giant.y, giant.size * 2.5, 0, Math.PI * 2);
+            journeyCtx.fill();
+            
+            // Middle glow
+            journeyCtx.fillStyle = `rgba(150, 80, 255, ${0.35 * glowPulse})`;
+            journeyCtx.beginPath();
+            journeyCtx.arc(giant.x, giant.y, giant.size * 1.8, 0, Math.PI * 2);
+            journeyCtx.fill();
+            
+            // Planet gradient
+            const planetGradient = journeyCtx.createRadialGradient(giant.x - 15, giant.y - 15, 0, giant.x, giant.y, giant.size);
+            planetGradient.addColorStop(0, '#dd66ff');
+            planetGradient.addColorStop(0.5, '#9944dd');
+            planetGradient.addColorStop(1, '#4422aa');
+            journeyCtx.fillStyle = planetGradient;
+            journeyCtx.beginPath();
+            journeyCtx.arc(giant.x, giant.y, giant.size, 0, Math.PI * 2);
+            journeyCtx.fill();
+            
+            // Glowing rings
+            journeyCtx.strokeStyle = `rgba(200, 150, 255, ${0.6 * glowPulse})`;
+            journeyCtx.lineWidth = 3;
+            journeyCtx.beginPath();
+            journeyCtx.ellipse(giant.x, giant.y, giant.size * 1.4, giant.size * 0.5, Math.PI / 4, 0, Math.PI * 2);
+            journeyCtx.stroke();
+          });
+          
+          // Black holes with enhanced glow
+          for (let i = 0; i < 2; i++) {
+            const bh = {
+              x: 250 + i * 400,
+              y: 200 + Math.sin(journeyProgress / 10 + i) * 80,
+              size: 35 + Math.sin(journeyProgress / 15 + i) * 8
+            };
+            
+            // Outer glow ring
+            journeyCtx.strokeStyle = 'rgba(200, 150, 255, 0.4)';
+            journeyCtx.lineWidth = 4;
+            journeyCtx.beginPath();
+            journeyCtx.arc(bh.x, bh.y, bh.size + 40, 0, Math.PI * 2);
+            journeyCtx.stroke();
+            
+            // Middle glow ring
+            journeyCtx.strokeStyle = 'rgba(150, 100, 255, 0.6)';
+            journeyCtx.lineWidth = 3;
+            journeyCtx.beginPath();
+            journeyCtx.arc(bh.x, bh.y, bh.size + 20, 0, Math.PI * 2);
+            journeyCtx.stroke();
+            
+            // Black hole core
+            journeyCtx.fillStyle = 'rgba(20, 5, 50, 0.9)';
+            journeyCtx.beginPath();
+            journeyCtx.arc(bh.x, bh.y, bh.size, 0, Math.PI * 2);
+            journeyCtx.fill();
+            
+            // Inner glow
+            journeyCtx.fillStyle = `rgba(100, 50, 150, 0.5)`;
+            journeyCtx.beginPath();
+            journeyCtx.arc(bh.x, bh.y, bh.size * 0.6, 0, Math.PI * 2);
+            journeyCtx.fill();
+          }
+          
+          journeyText.textContent = '🌌 SPACE';
+          jetX = journeyCanvas.width * 0.1 + journeyProgress * 10;
+          jetY = journeyCanvas.height * 0.2 - (journeyProgress - 75) * 4;
+        }
+        
+        drawJet(jetX, jetY, journeyProgress > 50 ? 0.2 : 0);
+        
+        if (journeyProgress > 100) {
+          journeyText.textContent = 'Welcome to the World! 🚀';
+          setTimeout(() => {
+            if (journeyActive) {
+              journeyModal.classList.remove('active');
+              journeyActive = false;
+            }
+          }, 2000);
+          return;
+        }
+        
+        if (journeyActive) requestAnimationFrame(journeyLoop);
+      }
 
     </script>
   </body>
