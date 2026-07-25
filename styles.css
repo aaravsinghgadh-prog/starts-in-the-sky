@@ -358,28 +358,47 @@ h1 {
 }
 
 .shape {
-  width: 80px;
-  height: 80px;
+  width: 96px;
+  height: 96px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  font-size: 3.6rem;
 }
 
 .shape-watch::before {
-  content: "⌚";
+  content: "💎";
+  color: #00d9ff;
+  text-shadow: 0 0 20px rgba(0, 217, 255, 0.8), 0 0 40px rgba(0, 217, 255, 0.5), 0 0 60px rgba(0, 217, 255, 0.3);
+  filter: drop-shadow(0 0 15px rgba(0, 217, 255, 0.6));
+  animation: glow-blue 2s ease-in-out infinite;
 }
 
 .shape-spaceship::before {
   content: "🛸";
+  filter: hue-rotate(120deg) saturate(1.3);
+  text-shadow: 0 0 15px rgba(100, 255, 150, 0.6);
 }
 
 .shape-witch::before {
   content: "🧙‍♀️";
+  filter: hue-rotate(260deg) saturate(1.2);
+  text-shadow: 0 0 20px rgba(150, 100, 255, 0.7), 0 0 40px rgba(200, 100, 255, 0.4);
 }
 
 .shape-water::before {
-  content: "💧";
+  content: "🍲";
+  color: #9d5eff;
+  text-shadow: 0 0 15px rgba(157, 94, 255, 0.6);
+}
+
+@keyframes glow-blue {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(0, 217, 255, 0.8), 0 0 40px rgba(0, 217, 255, 0.5), 0 0 60px rgba(0, 217, 255, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(0, 217, 255, 1), 0 0 60px rgba(0, 217, 255, 0.7), 0 0 90px rgba(0, 217, 255, 0.5);
+  }
 }
 
 @keyframes twinkle {
