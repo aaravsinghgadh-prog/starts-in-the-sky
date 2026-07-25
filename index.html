@@ -27,6 +27,18 @@
       </div>
     </div>
 
+    <div class="music-player">
+      <button class="play-btn" id="playBtn" aria-label="Play music">
+        <span class="play-icon">♪</span>
+      </button>
+      <div class="music-info">
+        <p class="track-name">Your Track</p>
+      </div>
+      <audio id="audioPlayer" loop>
+        <source src="your-music.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+
     <main class="hero">
       <section class="content">
         <p class="eyebrow">Personal website</p>
@@ -59,11 +71,85 @@
         </div>
       </article>
       <article>
-        <h2>Contact</h2>
+        <h2>My Music Journey</h2>
         <p>
-          Include your email, social links, or a contact form to stay connected.
+          Music has always been my greatest passion and source of inspiration. It all started when I discovered artists who broke boundaries and created their own lanes in hip-hop. The raw emotion, creativity, and authenticity in their work moved me deeply and shaped my artistic vision.
+        </p>
+        <p>
+          <strong>My Influences:</strong> Lil Mosey, Lil Tjay, Lil Tecca, and Drake showed me how to blend vulnerability with confidence, how to craft hooks that stick with you, and how to tell stories that resonate. These artists didn't just make music—they created movements. They proved that melodic rap could be powerful, introspective, and commercially successful all at once.
+        </p>
+        <p>
+          <strong>My Sound:</strong> My evolution has led me to love melodic rap infused with atmospheric trap beats. There's something magical about combining introspective lyrics with lush, spacious production that creates an immersive sonic experience. Atmospheric trap beats provide the perfect canvas for emotional storytelling—they're minimalist yet expansive, dark yet hopeful. This is where I'm headed with my music.
+        </p>
+        <p>
+          Music isn't just what I do—it's who I am. It's my voice when words fail, my therapy when life gets heavy, and my way of connecting with others who feel deeply. Every beat I create, every lyric I write, is an extension of my soul.
         </p>
       </article>
+
+      <article class="games-container">
+        <h2>Games</h2>
+        <div class="games-grid">
+          <!-- Sea Serpents History -->
+          <div class="game-section">
+            <h3>Sea Serpents</h3>
+            <div class="history-content">
+              <p><strong>Ancient Legends:</strong> Sea serpents have haunted maritime folklore for thousands of years, appearing in Viking sagas, Greek mythology, and ancient texts. The legendary Jörmungandr of Norse mythology was a serpent so vast it encircled the entire world.</p>
+              <p><strong>Age of Exploration:</strong> During the 16th-18th centuries, sailors reported massive serpent-like creatures in uncharted waters. These sightings fueled both fear and fascination among seafarers.</p>
+              <p><strong>Modern Theories:</strong> Scientists believe many sightings were misidentified giant squids, whale sharks, or oarfish—real deep-sea creatures that could appear serpent-like in stormy conditions.</p>
+              <p><strong>Cultural Impact:</strong> Sea serpents remain iconic symbols of the unknown ocean depths, inspiring countless tales, art, and literature that capture humanity's fascination with mysteries beneath the waves.</p>
+            </div>
+          </div>
+
+          <!-- Shiftiest NBA Guards -->
+          <div class="game-section">
+            <h3>Shiftiest NBA Guards</h3>
+            <div class="guards-content">
+              <div class="guard-bio">
+                <h4>🔶 Kyrie Irving</h4>
+                <p>The point guard with one of the most crossovers in NBA history. Known for his ankle breakers and unguardable handles, Kyrie has left defenders stumbling with his lightning-quick dribble moves and change of pace.</p>
+              </div>
+              <div class="guard-bio">
+                <h4>🔶 Allen Iverson</h4>
+                <p>The Answer revolutionized guard play with his explosive first step and unmatched agility. AI's crossover became legendary—he famously crossed over Michael Jordan and sent him tumbling. A 6-time NBA All-Star, Iverson's shifty moves made him unstoppable.</p>
+              </div>
+              <div class="guard-bio">
+                <h4>🔶 Darius Garland</h4>
+                <p>Young gun with elite ball-handling skills and deceptive quickness. Garland's ability to change direction at full speed and create separation makes him one of the modern shifty guards, capable of breaking down defenses with ease.</p>
+              </div>
+              <div class="guard-bio">
+                <h4>🔶 Shai Gilgeous-Alexander (SGA)</h4>
+                <p>One of the most skilled guards in the league today, SGA combines footwork, handles, and court vision. His crafty moves and ability to navigate traffic make him nearly impossible to guard, showcasing the evolution of modern point guard play.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
     </section>
+
+    <script>
+      // Music Player
+      const playBtn = document.getElementById('playBtn');
+      const audioPlayer = document.getElementById('audioPlayer');
+
+      playBtn.addEventListener('click', () => {
+        if (audioPlayer.paused) {
+          audioPlayer.play();
+          playBtn.classList.add('playing');
+        } else {
+          audioPlayer.pause();
+          playBtn.classList.remove('playing');
+        }
+      });
+
+      audioPlayer.addEventListener('play', () => {
+        playBtn.classList.add('playing');
+      });
+
+      audioPlayer.addEventListener('pause', () => {
+        playBtn.classList.remove('playing');
+      });
+
+
+    </script>
   </body>
 </html>
