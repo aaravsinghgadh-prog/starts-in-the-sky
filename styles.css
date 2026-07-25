@@ -305,6 +305,16 @@ h1 {
   margin-top: 0;
 }
 
+.details article:nth-child(1) h2 {
+  color: #5dd4ff;
+  text-shadow: 0 0 20px rgba(93, 212, 255, 0.8), 0 0 40px rgba(45, 154, 255, 0.6);
+}
+
+.details article:nth-child(2) h2 {
+  color: #d967ff;
+  text-shadow: 0 0 20px rgba(217, 103, 255, 0.8), 0 0 40px rgba(147, 51, 234, 0.6);
+}
+
 .details p {
   color: var(--muted);
   line-height: 1.6;
